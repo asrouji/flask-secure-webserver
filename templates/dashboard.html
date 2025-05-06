@@ -1,0 +1,14 @@
+<!-- Dashboard template; XSS prevented by Jinja2 auto-escaping -->
+<h1>What would you like to do today?</h1>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+<p style="color: green">{{ message }}</p>
+{% endfor %}
+{% endif %}
+{% endwith %}
+{% for account in accounts %}
+<p><a href="/details?account={{ account }}">Account {{ account }} details</a></p>
+{% endfor %}
+<p><a href="/transfer">Transfer</a></p>
+<p><a href="/logout">Logout</a></p>

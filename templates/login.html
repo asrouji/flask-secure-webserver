@@ -1,0 +1,13 @@
+{% if error %}
+<!-- XSS Prevention: Error message is escaped by Jinja2 to prevent script injection -->
+<p style="color: red">{{ error }}</p>
+{% endif %}
+<!-- Login form with CSRF protection -->
+<form method="post" action="/login">
+  <!-- CSRF Protection: Hidden token validated by Flask-WTF to prevent cross-site request forgery -->
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+  <!-- XSS Prevention: Input fields are rendered by Jinja2, ensuring safe output -->
+  <p>Email: <input type="text" name="email" /></p>
+  <p>Password: <input type="password" name="password" /></p>
+  <p><input type="submit" value="Login" /></p>
+</form>

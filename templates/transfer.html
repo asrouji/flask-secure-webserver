@@ -1,0 +1,13 @@
+<!-- Transfer form template; XSS prevented by Jinja2 auto-escaping -->
+<h1>Make a Transfer</h1>
+<form method="POST" action="/transfer">
+  <!-- CSRF Protection: Hidden token validated by Flask-WTF to prevent cross-site request forgery -->
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+  <pre>
+  From   <input name="from" />
+  To     <input name="to" />
+  Amount <input name="amount" />
+         <input type="submit" value="Transfer">
+  </pre>
+</form>
+<p><a href="/dashboard">Back to Dashboard</a></p>
