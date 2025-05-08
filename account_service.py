@@ -1,11 +1,19 @@
 import sqlite3
+from dotenv import load_dotenv
+import os
+
+# Load environment variables
+load_dotenv()
+
+# Get database path from environment variable
+DATABASE_PATH = os.getenv('DATABASE_PATH', 'bank.db')
 
 
 def get_balance(account_number, owner):
     # Retrieve balance for a specific account, ensuring user ownership
     try:
         # Connect to SQLite database
-        con = sqlite3.connect('bank.db')
+        con = sqlite3.connect(DATABASE_PATH)
         cur = con.cursor()
         # SQL Injection Prevention: Use parameterized query to safely query account
         # Authorization: Include owner in query to prevent access to other users' accounts
@@ -27,7 +35,7 @@ def do_transfer(source, target, amount):
     # Perform transfer between accounts
     try:
         # Connect to SQLite database
-        con = sqlite3.connect('bank.db')
+        con = sqlite3.connect(DATABASE_PATH)
         cur = con.cursor()
         # SQL Injection Prevention: Use parameterized query to check target account
         cur.execute('''
@@ -57,7 +65,7 @@ def get_user_accounts(owner):
     # Retrieve all account IDs owned by a user
     try:
         # Connect to SQLite database
-        con = sqlite3.connect('bank.db')
+        con = sqlite3.connect(DATABASE_PATH)
         cur = con.cursor()
         # SQL Injection Prevention: Use parameterized query to safely query accounts
         cur.execute('''

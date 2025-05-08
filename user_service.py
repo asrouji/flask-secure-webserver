@@ -3,9 +3,14 @@ from datetime import datetime, timedelta
 from passlib.hash import pbkdf2_sha256
 from flask import request, g
 import jwt
+from dotenv import load_dotenv
+import os
 
-# Secret key for JWT signing; should be cryptographically random in production
-SECRET = 'bfg28y7efg238re7r6t32gfo23vfy7237yibdyo238do2v3'
+# Load environment variables
+load_dotenv()
+
+# Get JWT secret key from environment variable
+SECRET = os.getenv('JWT_SECRET_KEY')
 
 
 def get_user_with_credentials(email, password):

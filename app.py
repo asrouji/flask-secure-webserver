@@ -2,12 +2,17 @@ from flask import Flask, request, make_response, redirect, render_template, g, a
 from flask_wtf.csrf import CSRFProtect
 from user_service import get_user_with_credentials, logged_in
 from account_service import get_balance, do_transfer, get_user_accounts
+from dotenv import load_dotenv
+import os
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Initialize Flask app with a secret key for session and CSRF protection
 # XSS Prevention: All templates use Jinja2, which auto-escapes output to prevent cross-site scripting attacks
 app = Flask(__name__, static_folder='static')
-# Secret key for CSRF and session security; should be cryptographically random in production
-app.config['SECRET_KEY'] = 'yoursupersecrettokenhere'
+# Secret key for CSRF and session security from environment variable
+app.config['SECRET_KEY'] = os.getenv('FLASK_SECRET_KEY')
 # Enable CSRF protection for all POST forms to prevent cross-site request forgery attacks
 csrf = CSRFProtect(app)
 
