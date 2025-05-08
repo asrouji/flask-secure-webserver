@@ -1,5 +1,4 @@
 import sqlite3
-from passlib.hash import pbkdf2_sha256
 
 con = sqlite3.connect('bank.db')
 cur = con.cursor()
