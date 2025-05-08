@@ -5,7 +5,7 @@ from account_service import get_balance, do_transfer, get_user_accounts
 
 # Initialize Flask app with a secret key for session and CSRF protection
 # XSS Prevention: All templates use Jinja2, which auto-escapes output to prevent cross-site scripting attacks
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 # Secret key for CSRF and session security; should be cryptographically random in production
 app.config['SECRET_KEY'] = 'yoursupersecrettokenhere'
 # Enable CSRF protection for all POST forms to prevent cross-site request forgery attacks
@@ -80,8 +80,10 @@ def transfer():
         # Authentication Check: Redirect unauthenticated users to login
         return render_template("login.html")
     if request.method == "GET":
-        # Render transfer form
-        return render_template("transfer.html")
+        # Get user's accounts for the transfer form
+        accounts = get_user_accounts(g.user)
+        # Render transfer form with accounts list
+        return render_template("transfer.html", accounts=accounts)
     # Process transfer (POST)
     try:
         # Safe access to form data
@@ -105,7 +107,7 @@ def transfer():
             abort(404, "Account not found")
         # Validation: Ensure sufficient funds
         if amount > available_balance:
-            abort(400, "You don't have that much")
+            abort(400, "You don't have that many SRFBOARDS")
 
         # Perform transfer
         # SQL Injection Prevention: Parameterized queries in do_transfer
@@ -114,7 +116,8 @@ def transfer():
             abort(400, "Something bad happened")
 
         # Success: Use flash instead of query params to provide feedback
-        flash(f"Successfully transferred {amount} to account {target}")
+        flash(
+            f"Successfully transferred {amount} SRFBOARDS to surfboard #{target}")
         return redirect("/dashboard"), 303
     except ValueError:
         # Error Handling: Handle non-integer amounts gracefully

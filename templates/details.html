@@ -1,5 +1,10 @@
-<!-- Account details template; XSS prevented by Jinja2 auto-escaping -->
-<p>Hi, {{ user }}</p>
-<h1>Details for Account {{ account_number }}</h1>
-<p>Your balance is {{ balance }}</p>
-<p><a href="/dashboard">Back to Dashboard</a></p>
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Surfboard Details</h1>
+<div class="account-card">
+  <h2>Surfboard #{{ account_number }}</h2>
+  <p class="balance">Current Value: {{ balance }} SRFBOARDS</p>
+</div>
+<a href="/dashboard">← Back to Dashboard</a>
+{% endblock %}

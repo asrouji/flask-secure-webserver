@@ -1,14 +1,32 @@
-<!-- Dashboard template; XSS prevented by Jinja2 auto-escaping -->
-<h1>What would you like to do today?</h1>
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Welcome to SRFBOARDS Exchange! 🏄‍♂️</h1>
+<p>Trade your SRFBOARDS securely in the digital ocean!</p>
+
 {% with messages = get_flashed_messages() %}
 {% if messages %}
 {% for message in messages %}
-<p style="color: green">{{ message }}</p>
+<div class="flash-message">{{ message }}</div>
 {% endfor %}
 {% endif %}
 {% endwith %}
-{% for account in accounts %}
-<p><a href="/details?account={{ account }}">Account {{ account }} details</a></p>
-{% endfor %}
-<p><a href="/transfer">Transfer</a></p>
-<p><a href="/logout">Logout</a></p>
+
+<div class="accounts-section">
+  <h2>Your Quivers</h2>
+  {% for account in accounts %}
+  <a href="/details?account={{ account }}" class="account-card">
+    Quiver #{{ account }}
+  </a>
+  {% endfor %}
+</div>
+
+<div class="actions">
+  <div class="transfer-container">
+    <a href="/transfer" class="button">Transfer SRFBOARDS</a>
+  </div>
+  <div class="logout-container">
+    <a href="/logout" class="logout">Logout</a>
+  </div>
+</div>
+{% endblock %}

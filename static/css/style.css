@@ -1,0 +1,216 @@
+:root {
+  --ocean-blue: #1a73e8;
+  --wave-blue: #4285f4;
+  --sand: #fbbc04;
+  --coral: #ea4335;
+  --seafoam: #34a853;
+  --white: #ffffff;
+  --light-blue: #e8f0fe;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: "Arial", sans-serif;
+  background: linear-gradient(135deg, var(--ocean-blue), var(--wave-blue));
+  color: var(--white);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  max-width: 800px;
+  width: 100%;
+  margin: 20px auto;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+h1 {
+  color: var(--sand);
+  text-align: center;
+  font-size: 2.5em;
+  margin-bottom: 30px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+  color: var(--light-blue);
+  margin-bottom: 20px;
+}
+
+a {
+  color: var(--light-blue);
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--sand);
+}
+
+.account-card {
+  display: block;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+  text-align: center;
+}
+
+.account-card:hover {
+  transform: translateY(-5px);
+  color: var(--sand);
+}
+
+.balance {
+  font-size: 1.5em;
+  color: var(--sand);
+  font-weight: bold;
+}
+
+.transfer-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.transfer-form div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.transfer-form label {
+  color: var(--light-blue);
+  font-weight: bold;
+  text-align: left;
+}
+
+.transfer-form input,
+.transfer-form select {
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--white);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.transfer-form select option {
+  background: var(--white);
+  color: var(--ocean-blue);
+  padding: 10px;
+}
+
+.transfer-form select option:checked {
+  background: var(--light-blue);
+  color: var(--ocean-blue);
+}
+
+.transfer-form button {
+  margin-top: 10px;
+  width: 100%;
+  padding: 14px;
+  font-size: 1.1em;
+}
+
+input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+button {
+  background: var(--sand);
+  color: var(--ocean-blue);
+  border: none;
+  padding: 12px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background: var(--coral);
+  color: var(--white);
+}
+
+.flash-message {
+  background: var(--sand);
+  color: var(--ocean-blue);
+  padding: 10px;
+  border-radius: 5px;
+  margin: 10px 0;
+  text-align: center;
+  font-weight: bold;
+}
+
+.flash-message.error {
+  background: var(--coral);
+  color: var(--white);
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.transfer-container {
+  flex: 1;
+}
+
+.logout-container {
+  text-align: right;
+}
+
+.logout {
+  color: var(--coral);
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.logout:hover {
+  color: var(--sand);
+}
+
+/* Wave animation */
+@keyframes wave {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.wave {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 200%;
+  height: 120px;
+  background: url('data:image/svg+xml,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg"><path d="M0 120 C150 120 150 60 300 60 C450 60 450 120 600 120 C750 120 750 60 900 60 C1050 60 1050 120 1200 120" fill="%23ffffff" fill-opacity=".15"/></svg>')
+    repeat-x;
+  background-size: 1200px 120px;
+  animation: wave 12s linear infinite;
+  z-index: -1;
+  opacity: 0.6;
+}

@@ -1,13 +1,26 @@
-<!-- Transfer form template; XSS prevented by Jinja2 auto-escaping -->
-<h1>Make a Transfer</h1>
-<form method="POST" action="/transfer">
-  <!-- CSRF Protection: Hidden token validated by Flask-WTF to prevent cross-site request forgery -->
-  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-  <pre>
-  From   <input name="from" />
-  To     <input name="to" />
-  Amount <input name="amount" />
-         <input type="submit" value="Transfer">
-  </pre>
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Transfer SRFBOARDS</h1>
+<form method="POST" class="transfer-form">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <div>
+    <label for="from">From Quiver:</label>
+    <select name="from" id="from" required>
+      {% for account in accounts %}
+      <option value="{{ account }}">Quiver #{{ account }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div>
+    <label for="to">To Quiver:</label>
+    <input type="text" name="to" id="to" required placeholder="Enter destination quiver number">
+  </div>
+  <div>
+    <label for="amount">Amount of SRFBOARDS:</label>
+    <input type="number" name="amount" id="amount" required min="1" max="1000">
+  </div>
+  <button type="submit">Transfer SRFBOARDS</button>
 </form>
-<p><a href="/dashboard">Back to Dashboard</a></p>
+<a href="/dashboard">← Back to Dashboard</a>
+{% endblock %}
