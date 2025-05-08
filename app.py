@@ -117,7 +117,7 @@ def transfer():
 
         # Success: Use flash instead of query params to provide feedback
         flash(
-            f"Successfully transferred {amount} SRFBOARDS to surfboard #{target}")
+            f"Successfully transferred {amount} SRFBOARDS to quiver #{target}")
         return redirect("/dashboard"), 303
     except ValueError:
         # Error Handling: Handle non-integer amounts gracefully
