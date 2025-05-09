@@ -4,6 +4,7 @@ from user_service import get_user_with_credentials, logged_in
 from account_service import get_balance, do_transfer, get_user_accounts
 from dotenv import load_dotenv
 import os
+from functools import wraps
 
 # Load environment variables from .env file
 load_dotenv()
@@ -15,6 +16,16 @@ app = Flask(__name__, static_folder='static')
 app.config['SECRET_KEY'] = os.getenv('FLASK_SECRET_KEY')
 # Enable CSRF protection for all POST forms to prevent cross-site request forgery attacks
 csrf = CSRFProtect(app)
+
+
+# Login required decorator to simplify authentication checks
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not logged_in():
+            return render_template("login.html")
+        return f(*args, **kwargs)
+    return decorated_function
 
 
 @app.route("/", methods=['GET'])
@@ -48,11 +59,9 @@ def login():
 
 
 @app.route("/dashboard", methods=['GET'])
+@login_required
 def dashboard():
     # Display user dashboard with their accounts
-    if not logged_in():
-        # Authentication Check: Redirect unauthenticated users to login
-        return render_template("login.html")
     # Fetch user's accounts to display dynamically
     # SQL Injection Prevention: Parameterized query in get_user_accounts
     accounts = get_user_accounts(g.user)
@@ -61,11 +70,9 @@ def dashboard():
 
 
 @app.route("/details", methods=['GET'])
+@login_required
 def details():
     # Display account details for a specific account
-    if not logged_in():
-        # Authentication Check: Redirect unauthenticated users to login
-        return render_template("login.html")
     # Safe access to query parameter
     account_number = request.args.get('account')
     # Authorization Check: get_balance ensures account belongs to the user
@@ -79,11 +86,9 @@ def details():
 
 
 @app.route("/transfer", methods=["GET", "POST"])
+@login_required
 def transfer():
     # Handle account transfers (GET for form, POST for processing)
-    if not logged_in():
-        # Authentication Check: Redirect unauthenticated users to login
-        return render_template("login.html")
     if request.method == "GET":
         # Get user's accounts for the transfer form
         accounts = get_user_accounts(g.user)
