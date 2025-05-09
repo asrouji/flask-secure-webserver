@@ -104,35 +104,47 @@ def transfer():
 
         # Validation: Prevent negative amounts to avoid stealing
         if amount < 0:
-            abort(400, "NO STEALING")
+            flash("NO STEALING", "error")
+            accounts = get_user_accounts(g.user)
+            return render_template("transfer.html", accounts=accounts)
         # Validation: Limit transfer amount to prevent abuse
         if amount > 1000:
-            abort(400, "WOAH THERE TAKE IT EASY")
+            flash("WOAH THERE TAKE IT EASY", "error")
+            accounts = get_user_accounts(g.user)
+            return render_template("transfer.html", accounts=accounts)
 
         # Authorization Check: Ensure source account belongs to user
         # SQL Injection Prevention: Parameterized query
         available_balance = get_balance(source, g.user)
         if available_balance is None:
-            # Error Handling: Return 404 if source account doesn't exist or isn't owned
-            abort(404, "Account not found")
+            # Error Handling: Return error message instead of 404
+            flash("Account not found", "error")
+            accounts = get_user_accounts(g.user)
+            return render_template("transfer.html", accounts=accounts)
         # Validation: Ensure sufficient funds
         if amount > available_balance:
-            abort(400, "You don't have that many SRFBOARDS")
+            flash("You don't have that many SRFBOARDS", "error")
+            accounts = get_user_accounts(g.user)
+            return render_template("transfer.html", accounts=accounts)
 
         # Perform transfer
         # SQL Injection Prevention: Parameterized queries in do_transfer
         if not do_transfer(source, target, amount):
-            # Error Handling: Return 400 if transfer fails (e.g., target account doesn't exist)
-            abort(400, "Something bad happened")
+            # Error Handling: Return error message instead of 400
+            flash("Transfer failed - please verify the destination account", "error")
+            accounts = get_user_accounts(g.user)
+            return render_template("transfer.html", accounts=accounts)
 
         # Success: Use flash instead of query params to provide feedback
         flash(
-            f"Successfully transferred {amount} SRFBOARDS to quiver #{target}")
+            f"Successfully transferred {amount} SRFBOARDS to quiver #{target}", "success")
         return redirect("/dashboard"), 303
     except ValueError:
         # Error Handling: Handle non-integer amounts gracefully
         # Validation: Prevent server crash from invalid input
-        abort(400, "Invalid amount")
+        flash("Invalid amount", "error")
+        accounts = get_user_accounts(g.user)
+        return render_template("transfer.html", accounts=accounts)
 
 
 @app.route("/logout", methods=['GET'])

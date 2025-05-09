@@ -2,6 +2,15 @@
 
 {% block content %}
 <h1>Transfer SRFBOARDS</h1>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="flash-message {{ category }}">{{ message }}</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
 <form method="POST" class="transfer-form">
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
   <div>
